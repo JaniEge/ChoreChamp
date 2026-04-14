@@ -10,6 +10,7 @@ import androidx.navigation.navArgument
 import dk.soerensen.chorechamp.ui.approvals.ApprovalsScreen
 import dk.soerensen.chorechamp.ui.child.ChildScreen
 import dk.soerensen.chorechamp.ui.child.ChooseTasksScreen
+import dk.soerensen.chorechamp.ui.child.DragonSelectScreen
 import dk.soerensen.chorechamp.ui.parent.AddTaskScreen
 import dk.soerensen.chorechamp.ui.parent.ParentScreen
 import dk.soerensen.chorechamp.ui.profile.ProfileScreen
@@ -92,6 +93,14 @@ fun AppNavHost(
         ) { backStackEntry ->
             val username = backStackEntry.arguments?.getString("username") ?: ""
             ProfileScreen(navController = navController, username = username)
+        }
+
+        composable(
+            route = NavRoutes.DRAGON_SELECT,
+            arguments = listOf(navArgument("username") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val username = backStackEntry.arguments?.getString("username") ?: ""
+            DragonSelectScreen(navController = navController, username = username)
         }
     }
 }

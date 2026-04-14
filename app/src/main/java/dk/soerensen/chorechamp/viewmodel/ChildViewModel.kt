@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dk.soerensen.chorechamp.data.local.entity.ChildStatsEntity
 import dk.soerensen.chorechamp.data.local.entity.TaskEntity
 import dk.soerensen.chorechamp.data.local.entity.UserProfileEntity
+import dk.soerensen.chorechamp.model.DragonHelper
 import dk.soerensen.chorechamp.data.repository.ChoreRepository
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -15,7 +16,9 @@ data class ChildUiState(
     val profile: UserProfileEntity? = null,
     val stats: ChildStatsEntity? = null,
     val todayTasks: List<TaskEntity> = emptyList(),
-    val dragonLabel: String = "Dragon Egg 🥚",
+    val dragonLabel: String = "🥚 Dragon Egg",
+    val dragonType: Int = 1,
+    val completedChoresCount: Int = 0,
     val isLoading: Boolean = true
 )
 
@@ -42,19 +45,18 @@ class ChildViewModel(
 
             combine(
                 repository.getTasksForChildOnDate(today, childId, dayOfWeek),
-                repository.getChildStats(childId)
-            ) { tasks, stats ->
-                val points = stats?.totalPoints ?: 0
-                val dragonLabel = when {
-                    points >= 100 -> "Dragon Level 3 🐲"
-                    points >= 50 -> "Young Dragon 🐉"
-                    else -> "Dragon Egg 🥚"
-                }
+                repository.getChildStats(childId),
+                repository.getCompletedChoresCount(childId)
+            ) { tasks, stats, completedCount ->
+                val dragonType = stats?.dragonType?.takeIf { it > 0 } ?: 1
+                val dragonLabel = DragonHelper.getStageName(completedCount)
                 ChildUiState(
                     profile = profile,
                     stats = stats,
                     todayTasks = tasks,
                     dragonLabel = dragonLabel,
+                    dragonType = dragonType,
+                    completedChoresCount = completedCount,
                     isLoading = false
                 )
             }.collect { state ->

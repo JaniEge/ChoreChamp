@@ -46,4 +46,7 @@ interface TaskDao {
 
     @Query("SELECT * FROM tasks WHERE selectedByChildId = :childId AND status = 'APPROVED'")
     fun getApprovedTasksForChild(childId: Int): Flow<List<TaskEntity>>
+
+    @Query("SELECT COUNT(*) FROM tasks WHERE selectedByChildId = :childId AND status = 'APPROVED'")
+    fun getCompletedChoresCount(childId: Int): Flow<Int>
 }

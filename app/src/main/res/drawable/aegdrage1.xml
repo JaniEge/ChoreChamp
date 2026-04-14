@@ -1,0 +1,19 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="140dp"
+    android:viewportWidth="120"
+    android:viewportHeight="140">
+    <!-- Egg stage - Dragon 1 (Red) -->
+    <path
+        android:fillColor="#FFCDD2"
+        android:pathData="M60,10 C85,10 105,45 105,80 C105,115 85,135 60,135 C35,135 15,115 15,80 C15,45 35,10 60,10 Z" />
+    <path
+        android:fillColor="#E53935"
+        android:pathData="M60,10 C75,10 90,30 92,55 C80,50 70,48 60,48 C50,48 40,50 28,55 C30,30 45,10 60,10 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M40,80 C40,73 45,68 52,68 C52,75 47,80 40,80 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M80,80 C80,73 75,68 68,68 C68,75 73,80 80,80 Z" />
+</vector>

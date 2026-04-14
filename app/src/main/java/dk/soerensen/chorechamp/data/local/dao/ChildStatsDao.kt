@@ -17,4 +17,7 @@ interface ChildStatsDao {
 
     @Query("SELECT * FROM child_stats WHERE childId = :childId LIMIT 1")
     suspend fun getStatsOnce(childId: Int): ChildStatsEntity?
+
+    @Query("UPDATE child_stats SET dragonType = :dragonType WHERE childId = :childId")
+    suspend fun updateDragonType(childId: Int, dragonType: Int)
 }

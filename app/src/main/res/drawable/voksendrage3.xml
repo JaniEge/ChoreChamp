@@ -1,0 +1,23 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    <!-- Adult Dragon - Dragon 3 (Purple/Gold) -->
+    <path android:fillColor="#4527A0" android:pathData="M60,35 C82,35 100,52 100,74 C100,96 82,110 60,110 C38,110 20,96 20,74 C20,52 38,35 60,35 Z" />
+    <path android:fillColor="#6A1B9A" android:pathData="M20,62 C5,45 0,20 8,8 C15,25 18,45 20,62 Z" />
+    <path android:fillColor="#6A1B9A" android:pathData="M100,62 C115,45 120,20 112,8 C105,25 102,45 100,62 Z" />
+    <path android:fillColor="#E1BEE7" android:pathData="M20,62 C10,48 8,30 12,18 C16,30 18,46 20,62 Z" />
+    <path android:fillColor="#E1BEE7" android:pathData="M100,62 C110,48 112,30 108,18 C104,30 102,46 100,62 Z" />
+    <path android:fillColor="#5E35B1" android:pathData="M50,25 L70,25 L67,40 L53,40 Z" />
+    <path android:fillColor="#5E35B1" android:pathData="M60,5 C76,5 87,16 87,28 C87,42 76,48 60,48 C44,48 33,42 33,28 C33,16 44,5 60,5 Z" />
+    <path android:fillColor="#FDD835" android:pathData="M46,5 L42,-3 L50,3 Z" />
+    <path android:fillColor="#FDD835" android:pathData="M60,3 L60,-5 L64,3 Z" />
+    <path android:fillColor="#FDD835" android:pathData="M74,5 L78,-3 L70,3 Z" />
+    <path android:fillColor="#FDD835" android:pathData="M49,22 C49,17 54,15 57,18 C57,23 52,25 49,22 Z" />
+    <path android:fillColor="#FDD835" android:pathData="M71,22 C71,17 66,15 63,18 C63,23 68,25 71,22 Z" />
+    <path android:fillColor="#311B92" android:pathData="M55,34 C55,32 57,31 58,32 C58,34 56,35 55,34 Z" />
+    <path android:fillColor="#311B92" android:pathData="M65,34 C65,32 63,31 62,32 C62,34 64,35 65,34 Z" />
+    <path android:fillColor="#311B92" android:pathData="M60,110 L45,120 L62,116 L78,120 Z" />
+    <path android:fillColor="#EDE7F6" android:pathData="M45,70 C45,60 55,55 60,60 C65,55 75,60 75,70 C75,80 65,88 60,88 C55,88 45,80 45,70 Z" />
+</vector>

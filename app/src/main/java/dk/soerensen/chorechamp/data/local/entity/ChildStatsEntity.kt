@@ -7,5 +7,6 @@ import androidx.room.PrimaryKey
 data class ChildStatsEntity(
     @PrimaryKey val childId: Int,
     val totalPoints: Int = 0,
-    val dragonLevel: Int = 0
+    val dragonLevel: Int = 0,
+    val dragonType: Int = 0
 )

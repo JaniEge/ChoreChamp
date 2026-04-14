@@ -1,5 +1,6 @@
 package dk.soerensen.chorechamp.ui.child
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,7 +18,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -26,6 +29,7 @@ import coil.compose.AsyncImage
 import dk.soerensen.chorechamp.data.local.database.ChoreChampDatabase
 import dk.soerensen.chorechamp.data.local.entity.TaskEntity
 import dk.soerensen.chorechamp.data.repository.ChoreRepository
+import dk.soerensen.chorechamp.model.DragonHelper
 import dk.soerensen.chorechamp.ui.navigation.NavRoutes
 import dk.soerensen.chorechamp.ui.theme.BackgroundDark
 import dk.soerensen.chorechamp.ui.theme.BackgroundMedium
@@ -67,6 +71,8 @@ fun ChildScreen(navController: NavController, username: String) {
                     profileImageUri = uiState.profile?.profileImageUri,
                     totalPoints = uiState.stats?.totalPoints ?: 0,
                     dragonLabel = uiState.dragonLabel,
+                    dragonType = uiState.dragonType,
+                    completedChoresCount = uiState.completedChoresCount,
                     onProfileClick = { navController.navigate(NavRoutes.profile(username)) }
                 )
 
@@ -123,68 +129,94 @@ private fun TopSection(
     profileImageUri: String?,
     totalPoints: Int,
     dragonLabel: String,
+    dragonType: Int,
+    completedChoresCount: Int,
     onProfileClick: () -> Unit
 ) {
+    val dragonImageRes = DragonHelper.getDragonImage(completedChoresCount, dragonType)
+
     Surface(
         color = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f),
         modifier = Modifier.fillMaxWidth()
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Card(
-                onClick = onProfileClick,
-                shape = CircleShape,
-                modifier = Modifier.size(60.dp)
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                if (profileImageUri != null) {
-                    AsyncImage(
-                        model = profileImageUri,
-                        contentDescription = "Profile picture of $username",
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop
-                    )
-                } else {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(MaterialTheme.colorScheme.primaryContainer),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = username.firstOrNull()?.uppercaseChar()?.toString() ?: "?",
-                            style = MaterialTheme.typography.titleLarge,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                Card(
+                    onClick = onProfileClick,
+                    shape = CircleShape,
+                    modifier = Modifier.size(60.dp)
+                ) {
+                    if (profileImageUri != null) {
+                        AsyncImage(
+                            model = profileImageUri,
+                            contentDescription = "Profile picture of $username",
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop
                         )
+                    } else {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(MaterialTheme.colorScheme.primaryContainer),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = username.firstOrNull()?.uppercaseChar()?.toString() ?: "?",
+                                style = MaterialTheme.typography.titleLarge,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                        }
                     }
+                }
+
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = "$totalPoints",
+                        style = MaterialTheme.typography.headlineMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = DragonGold
+                    )
+                    Text(
+                        text = "points",
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    Image(
+                        painter = painterResource(id = dragonImageRes),
+                        contentDescription = dragonLabel,
+                        modifier = Modifier.size(56.dp)
+                    )
+                    Text(
+                        text = dragonLabel,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.secondary,
+                        textAlign = TextAlign.Center
+                    )
                 }
             }
 
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    text = "$totalPoints",
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = DragonGold
-                )
-                Text(
-                    text = "points",
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-            }
-
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    text = dragonLabel,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.secondary
-                )
-            }
+            Text(
+                text = "Completed: $completedChoresCount chores",
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp)
+                    .padding(bottom = 8.dp),
+                textAlign = TextAlign.Center
+            )
         }
     }
 }
