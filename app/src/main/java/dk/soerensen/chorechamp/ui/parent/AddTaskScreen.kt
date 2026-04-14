@@ -80,27 +80,74 @@ fun AddTaskScreen(navController: NavController, username: String) {
             )
 
             Text(
-                text = "Schedule for:",
+                text = "Task type:",
                 style = MaterialTheme.typography.labelLarge
             )
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .horizontalScroll(rememberScrollState()),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                (0..6).forEach { offset ->
-                    val date = LocalDate.now().plusDays(offset.toLong())
-                    val label = when (offset) {
-                        0 -> "Today"
-                        1 -> "Tmrw"
-                        else -> date.format(DateTimeFormatter.ofPattern("EEE"))
+                FilterChip(
+                    selected = uiState.recurrence == "NONE",
+                    onClick = { viewModel.onRecurrenceChange("NONE") },
+                    label = { Text("One-time") },
+                    modifier = Modifier.weight(1f)
+                )
+                FilterChip(
+                    selected = uiState.recurrence == "WEEKLY",
+                    onClick = { viewModel.onRecurrenceChange("WEEKLY") },
+                    label = { Text("Weekly recurring") },
+                    modifier = Modifier.weight(1f)
+                )
+            }
+
+            if (uiState.recurrence == "NONE") {
+                Text(
+                    text = "Schedule for:",
+                    style = MaterialTheme.typography.labelLarge
+                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .horizontalScroll(rememberScrollState()),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    (0..6).forEach { offset ->
+                        val date = LocalDate.now().plusDays(offset.toLong())
+                        val label = when (offset) {
+                            0 -> "Today"
+                            1 -> "Tmrw"
+                            else -> date.format(DateTimeFormatter.ofPattern("EEE"))
+                        }
+                        FilterChip(
+                            selected = uiState.selectedDayOffset == offset,
+                            onClick = { viewModel.onDayOffsetChange(offset) },
+                            label = { Text(label) }
+                        )
                     }
-                    FilterChip(
-                        selected = uiState.selectedDayOffset == offset,
-                        onClick = { viewModel.onDayOffsetChange(offset) },
-                        label = { Text(label) }
-                    )
+                }
+            } else {
+                val weekdays = listOf(
+                    1 to "Mon", 2 to "Tue", 3 to "Wed", 4 to "Thu",
+                    5 to "Fri", 6 to "Sat", 7 to "Sun"
+                )
+                Text(
+                    text = "Repeat every:",
+                    style = MaterialTheme.typography.labelLarge
+                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .horizontalScroll(rememberScrollState()),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    weekdays.forEach { (dayNum, label) ->
+                        FilterChip(
+                            selected = uiState.selectedDayOfWeek == dayNum,
+                            onClick = { viewModel.onDayOfWeekChange(dayNum) },
+                            label = { Text(label) }
+                        )
+                    }
                 }
             }
 

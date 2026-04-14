@@ -11,5 +11,7 @@ data class TaskEntity(
     val assignedDate: String,
     val selectedByChildId: Int? = null,
     val status: String = "AVAILABLE",
-    val createdByParentId: Int = 0
+    val createdByParentId: Int = 0,
+    val recurrence: String = "NONE",
+    val dayOfWeek: Int? = null
 )

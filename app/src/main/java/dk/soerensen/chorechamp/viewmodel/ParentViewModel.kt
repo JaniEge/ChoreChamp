@@ -32,9 +32,10 @@ class ParentViewModel(
     private fun loadData() {
         viewModelScope.launch {
             val today = LocalDate.now().toString()
+            val dayOfWeek = LocalDate.now().dayOfWeek.value
 
             combine(
-                repository.getTasksForDate(today),
+                repository.getTasksForDate(today, dayOfWeek),
                 repository.getPendingApprovalTasks(),
                 repository.getAllChildren()
             ) { todayTasks, pendingTasks, children ->

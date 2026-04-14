@@ -30,15 +30,16 @@ class ChoreRepository(
 
     fun getAllChildren(): Flow<List<UserProfileEntity>> = userProfileDao.getAllChildren()
 
-    fun getTasksForDate(date: String): Flow<List<TaskEntity>> = taskDao.getTasksForDate(date)
+    fun getTasksForDate(date: String, dayOfWeek: Int): Flow<List<TaskEntity>> =
+        taskDao.getTasksForDate(date, dayOfWeek)
 
-    fun getTasksForChildOnDate(date: String, childId: Int): Flow<List<TaskEntity>> =
-        taskDao.getTasksForChildOnDate(date, childId)
+    fun getTasksForChildOnDate(date: String, childId: Int, dayOfWeek: Int): Flow<List<TaskEntity>> =
+        taskDao.getTasksForChildOnDate(date, childId, dayOfWeek)
 
     fun getPendingApprovalTasks(): Flow<List<TaskEntity>> = taskDao.getPendingApprovalTasks()
 
-    fun getAvailableTasksForDate(date: String): Flow<List<TaskEntity>> =
-        taskDao.getAvailableTasksForDate(date)
+    fun getAvailableTasksForDate(date: String, dayOfWeek: Int): Flow<List<TaskEntity>> =
+        taskDao.getAvailableTasksForDate(date, dayOfWeek)
 
     suspend fun addTask(task: TaskEntity) = taskDao.insert(task)
 
