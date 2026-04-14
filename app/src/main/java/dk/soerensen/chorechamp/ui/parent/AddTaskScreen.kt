@@ -1,5 +1,6 @@
 package dk.soerensen.chorechamp.ui.parent
 
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -83,7 +84,9 @@ fun AddTaskScreen(navController: NavController, username: String) {
                 style = MaterialTheme.typography.labelLarge
             )
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(rememberScrollState()),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 (0..6).forEach { offset ->

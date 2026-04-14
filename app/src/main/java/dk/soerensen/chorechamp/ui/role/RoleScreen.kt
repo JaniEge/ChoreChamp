@@ -1,5 +1,6 @@
 package dk.soerensen.chorechamp.ui.role
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material3.*
@@ -126,8 +127,9 @@ fun RoleCard(
     Card(
         onClick = onClick,
         modifier = modifier,
-        border = CardDefaults.outlinedCardBorder().copy(
-            width = if (selected) 2.dp else 1.dp
+        border = BorderStroke(
+            width = if (selected) 2.dp else 1.dp,
+            color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline
         ),
         colors = CardDefaults.cardColors(
             containerColor = if (selected)
