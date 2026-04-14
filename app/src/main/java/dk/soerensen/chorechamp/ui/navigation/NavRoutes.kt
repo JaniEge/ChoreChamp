@@ -8,6 +8,7 @@ object NavRoutes {
     const val APPROVALS = "approvals/{username}"
     const val ADD_TASK = "add_task/{username}"
     const val REWARDS = "rewards/{username}"
+    const val PARENT_REWARDS = "parent_rewards/{username}"
     const val PROFILE = "profile/{username}"
 
     fun child(username: String) = "child/$username"
@@ -16,5 +17,6 @@ object NavRoutes {
     fun approvals(username: String) = "approvals/$username"
     fun addTask(username: String) = "add_task/$username"
     fun rewards(username: String) = "rewards/$username"
+    fun parentRewards(username: String) = "parent_rewards/$username"
     fun profile(username: String) = "profile/$username"
 }

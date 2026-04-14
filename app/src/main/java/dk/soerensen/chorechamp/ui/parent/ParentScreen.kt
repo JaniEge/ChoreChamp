@@ -96,7 +96,7 @@ fun ParentScreen(navController: NavController, username: String) {
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         OutlinedButton(
-                            onClick = { navController.navigate(NavRoutes.rewards(username)) },
+                            onClick = { navController.navigate(NavRoutes.parentRewards(username)) },
                             modifier = Modifier.weight(1f)
                         ) {
                             Text("🏆 Rewards")

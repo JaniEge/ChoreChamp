@@ -43,4 +43,7 @@ interface TaskDao {
 
     @Query("SELECT * FROM tasks WHERE id = :id LIMIT 1")
     suspend fun findById(id: Int): TaskEntity?
+
+    @Query("SELECT * FROM tasks WHERE selectedByChildId = :childId AND status = 'APPROVED'")
+    fun getApprovedTasksForChild(childId: Int): Flow<List<TaskEntity>>
 }
