@@ -33,8 +33,9 @@ class ChooseTasksViewModel(
             val profile = repository.findOrCreateUser(username, "CHILD")
             childId = profile.id
             val today = LocalDate.now().toString()
+            val dayOfWeek = LocalDate.now().dayOfWeek.value
 
-            repository.getAvailableTasksForDate(today).collect { tasks ->
+            repository.getAvailableTasksForDate(today, dayOfWeek).collect { tasks ->
                 _uiState.value = ChooseTasksUiState(availableTasks = tasks, isLoading = false)
             }
         }

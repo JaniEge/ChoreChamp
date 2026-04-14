@@ -16,7 +16,9 @@ data class AddTaskUiState(
     val selectedDayOffset: Int = 0,
     val selectedChildId: Int? = null,
     val children: List<UserProfileEntity> = emptyList(),
-    val isSaved: Boolean = false
+    val isSaved: Boolean = false,
+    val recurrence: String = "NONE",
+    val selectedDayOfWeek: Int = 1
 )
 
 class AddTaskViewModel(
@@ -59,13 +61,27 @@ class AddTaskViewModel(
         _uiState.value = _uiState.value.copy(selectedChildId = childId)
     }
 
+    fun onRecurrenceChange(recurrence: String) {
+        _uiState.value = _uiState.value.copy(recurrence = recurrence)
+    }
+
+    fun onDayOfWeekChange(dayOfWeek: Int) {
+        _uiState.value = _uiState.value.copy(selectedDayOfWeek = dayOfWeek)
+    }
+
     fun saveTask() {
         val state = _uiState.value
         val title = state.title.trim()
         val points = state.points.trim().toIntOrNull() ?: return
         if (title.isEmpty()) return
 
-        val assignedDate = LocalDate.now().plusDays(state.selectedDayOffset.toLong()).toString()
+        val assignedDate = if (state.recurrence == "NONE") {
+            LocalDate.now().plusDays(state.selectedDayOffset.toLong()).toString()
+        } else {
+            LocalDate.now().toString()
+        }
+
+        val dayOfWeek = if (state.recurrence == "WEEKLY") state.selectedDayOfWeek else null
 
         viewModelScope.launch {
             val task = TaskEntity(
@@ -74,7 +90,9 @@ class AddTaskViewModel(
                 assignedDate = assignedDate,
                 selectedByChildId = state.selectedChildId,
                 status = if (state.selectedChildId != null) "SELECTED" else "AVAILABLE",
-                createdByParentId = parentId
+                createdByParentId = parentId,
+                recurrence = state.recurrence,
+                dayOfWeek = dayOfWeek
             )
             repository.addTask(task)
             _uiState.value = _uiState.value.copy(isSaved = true)

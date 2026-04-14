@@ -14,7 +14,7 @@ import dk.soerensen.chorechamp.data.local.entity.*
         RewardEntity::class,
         ChildStatsEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class ChoreChampDatabase : RoomDatabase() {
@@ -33,7 +33,7 @@ abstract class ChoreChampDatabase : RoomDatabase() {
                     context.applicationContext,
                     ChoreChampDatabase::class.java,
                     "chorechamp_database"
-                ).build()
+                ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 instance
             }

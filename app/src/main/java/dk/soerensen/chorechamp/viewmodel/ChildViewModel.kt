@@ -38,9 +38,10 @@ class ChildViewModel(
             val profile = repository.findOrCreateUser(username, "CHILD")
             childId = profile.id
             val today = LocalDate.now().toString()
+            val dayOfWeek = LocalDate.now().dayOfWeek.value
 
             combine(
-                repository.getTasksForChildOnDate(today, childId),
+                repository.getTasksForChildOnDate(today, childId, dayOfWeek),
                 repository.getChildStats(childId)
             ) { tasks, stats ->
                 val points = stats?.totalPoints ?: 0

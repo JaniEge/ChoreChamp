@@ -6,17 +6,31 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TaskDao {
-    @Query("SELECT * FROM tasks WHERE assignedDate = :date")
-    fun getTasksForDate(date: String): Flow<List<TaskEntity>>
+    @Query("""
+        SELECT * FROM tasks
+        WHERE (recurrence = 'NONE' AND assignedDate = :date)
+           OR (recurrence = 'WEEKLY' AND dayOfWeek = :dayOfWeek)
+    """)
+    fun getTasksForDate(date: String, dayOfWeek: Int): Flow<List<TaskEntity>>
 
-    @Query("SELECT * FROM tasks WHERE assignedDate = :date AND selectedByChildId = :childId")
-    fun getTasksForChildOnDate(date: String, childId: Int): Flow<List<TaskEntity>>
+    @Query("""
+        SELECT * FROM tasks
+        WHERE selectedByChildId = :childId
+          AND ((recurrence = 'NONE' AND assignedDate = :date)
+            OR (recurrence = 'WEEKLY' AND dayOfWeek = :dayOfWeek))
+    """)
+    fun getTasksForChildOnDate(date: String, childId: Int, dayOfWeek: Int): Flow<List<TaskEntity>>
 
     @Query("SELECT * FROM tasks WHERE status = 'PENDING_APPROVAL'")
     fun getPendingApprovalTasks(): Flow<List<TaskEntity>>
 
-    @Query("SELECT * FROM tasks WHERE assignedDate = :date AND (status = 'AVAILABLE' OR selectedByChildId IS NULL)")
-    fun getAvailableTasksForDate(date: String): Flow<List<TaskEntity>>
+    @Query("""
+        SELECT * FROM tasks
+        WHERE status = 'AVAILABLE' AND selectedByChildId IS NULL
+          AND ((recurrence = 'NONE' AND assignedDate = :date)
+            OR (recurrence = 'WEEKLY' AND dayOfWeek = :dayOfWeek))
+    """)
+    fun getAvailableTasksForDate(date: String, dayOfWeek: Int): Flow<List<TaskEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(task: TaskEntity): Long
