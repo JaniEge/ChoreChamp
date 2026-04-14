@@ -10,12 +10,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -26,15 +28,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import dk.soerensen.chorechamp.R
 import dk.soerensen.chorechamp.data.local.database.ChoreChampDatabase
 import dk.soerensen.chorechamp.data.local.entity.TaskEntity
 import dk.soerensen.chorechamp.data.repository.ChoreRepository
 import dk.soerensen.chorechamp.model.DragonHelper
 import dk.soerensen.chorechamp.ui.navigation.NavRoutes
-import dk.soerensen.chorechamp.ui.theme.BackgroundDark
-import dk.soerensen.chorechamp.ui.theme.BackgroundMedium
-import dk.soerensen.chorechamp.ui.theme.DragonGold
-import dk.soerensen.chorechamp.ui.theme.SurfaceCard
+import dk.soerensen.chorechamp.ui.theme.ScreenBackground
 import dk.soerensen.chorechamp.viewmodel.ChildViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -53,15 +53,7 @@ fun ChildScreen(navController: NavController, username: String) {
 
     val today = LocalDate.now().format(DateTimeFormatter.ofPattern("EEEE, MMMM d"))
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                Brush.verticalGradient(
-                    colors = listOf(BackgroundDark, BackgroundMedium)
-                )
-            )
-    ) {
+    ScreenBackground(backgroundRes = R.drawable.bg_child) {
         if (uiState.isLoading) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         } else {
@@ -136,7 +128,7 @@ private fun TopSection(
     val dragonImageRes = DragonHelper.getDragonImage(completedChoresCount, dragonType)
 
     Surface(
-        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f),
+        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -180,7 +172,7 @@ private fun TopSection(
                         text = "$totalPoints",
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold,
-                        color = DragonGold
+                        color = MaterialTheme.colorScheme.primary
                     )
                     Text(
                         text = "points",
@@ -239,7 +231,7 @@ private fun TaskCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = SurfaceCard
+            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
@@ -255,19 +247,23 @@ private fun TaskCard(
                     text = task.title,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color = Color.Black
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     text = "${task.points} pts  •  $statusLabel",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = Color.DarkGray
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
             if (task.status == "SELECTED") {
                 Box {
                     IconButton(onClick = { menuExpanded = true }) {
-                        Icon(Icons.Default.MoreVert, contentDescription = "More options", tint = Color.DarkGray)
+                        Icon(
+                            Icons.Default.MoreVert,
+                            contentDescription = "More options",
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     }
                     DropdownMenu(
                         expanded = menuExpanded,
@@ -301,7 +297,7 @@ private fun BottomActions(
     onRewardsClick: () -> Unit
 ) {
     Surface(
-        color = MaterialTheme.colorScheme.surface,
+        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(

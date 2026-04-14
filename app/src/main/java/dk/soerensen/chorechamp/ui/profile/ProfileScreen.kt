@@ -24,8 +24,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import dk.soerensen.chorechamp.R
 import dk.soerensen.chorechamp.data.local.database.ChoreChampDatabase
 import dk.soerensen.chorechamp.data.repository.ChoreRepository
+import dk.soerensen.chorechamp.ui.theme.ScreenBackground
 import dk.soerensen.chorechamp.viewmodel.ProfileViewModel
 import java.io.File
 
@@ -64,96 +66,110 @@ fun ProfileScreen(navController: NavController, username: String) {
         }
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Profile") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                    }
-                }
-            )
-        }
-    ) { paddingValues ->
-        if (uiState.isLoading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        } else {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(20.dp)
-            ) {
-                Box(
-                    contentAlignment = Alignment.BottomEnd
-                ) {
-                    val imageUri = uiState.profile?.profileImageUri
-
-                    if (imageUri != null) {
-                        AsyncImage(
-                            model = imageUri,
-                            contentDescription = "Profile picture",
-                            modifier = Modifier
-                                .size(120.dp)
-                                .clip(CircleShape),
-                            contentScale = ContentScale.Crop
-                        )
-                    } else {
-                        Box(
-                            modifier = Modifier
-                                .size(120.dp)
-                                .clip(CircleShape)
-                                .background(MaterialTheme.colorScheme.primaryContainer),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = username.firstOrNull()?.uppercaseChar()?.toString() ?: "?",
-                                style = MaterialTheme.typography.displayLarge,
-                                color = MaterialTheme.colorScheme.onPrimaryContainer
-                            )
+    ScreenBackground(backgroundRes = R.drawable.bg_profile) {
+        Scaffold(
+            containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0f),
+            topBar = {
+                TopAppBar(
+                    title = { Text("Profile") },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
+                    ),
+                    navigationIcon = {
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                         }
                     }
-
-                    SmallFloatingActionButton(
-                        onClick = {
-                            permissionLauncher.launch(android.Manifest.permission.CAMERA)
-                        },
-                        containerColor = MaterialTheme.colorScheme.primary
+                )
+            }
+        ) { paddingValues ->
+            if (uiState.isLoading) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            } else {
+                Surface(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .padding(24.dp),
+                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
+                    shape = MaterialTheme.shapes.large
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(24.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(20.dp)
                     ) {
-                        Icon(Icons.Default.Add, contentDescription = "Take photo")
+                        Box(
+                            contentAlignment = Alignment.BottomEnd
+                        ) {
+                            val imageUri = uiState.profile?.profileImageUri
+
+                            if (imageUri != null) {
+                                AsyncImage(
+                                    model = imageUri,
+                                    contentDescription = "Profile picture",
+                                    modifier = Modifier
+                                        .size(120.dp)
+                                        .clip(CircleShape),
+                                    contentScale = ContentScale.Crop
+                                )
+                            } else {
+                                Box(
+                                    modifier = Modifier
+                                        .size(120.dp)
+                                        .clip(CircleShape)
+                                        .background(MaterialTheme.colorScheme.primaryContainer),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        text = username.firstOrNull()?.uppercaseChar()?.toString() ?: "?",
+                                        style = MaterialTheme.typography.displayLarge,
+                                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                                    )
+                                }
+                            }
+
+                            SmallFloatingActionButton(
+                                onClick = {
+                                    permissionLauncher.launch(android.Manifest.permission.CAMERA)
+                                },
+                                containerColor = MaterialTheme.colorScheme.primary
+                            ) {
+                                Icon(Icons.Default.Add, contentDescription = "Take photo")
+                            }
+                        }
+
+                        Text(
+                            text = username,
+                            style = MaterialTheme.typography.headlineMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+
+                        Text(
+                            text = "Role: Child 🧒",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                        )
+
+                        HorizontalDivider()
+
+                        Text(
+                            text = "Tap the camera icon to update your profile picture",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                        )
                     }
                 }
-
-                Text(
-                    text = username,
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-
-                Text(
-                    text = "Role: Child 🧒",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
-                )
-
-                HorizontalDivider()
-
-                Text(
-                    text = "Tap the camera icon to update your profile picture",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
-                )
             }
         }
     }

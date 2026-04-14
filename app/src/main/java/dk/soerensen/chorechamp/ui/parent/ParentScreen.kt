@@ -15,10 +15,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import dk.soerensen.chorechamp.R
 import dk.soerensen.chorechamp.data.local.database.ChoreChampDatabase
 import dk.soerensen.chorechamp.data.local.entity.TaskEntity
 import dk.soerensen.chorechamp.data.repository.ChoreRepository
 import dk.soerensen.chorechamp.ui.navigation.NavRoutes
+import dk.soerensen.chorechamp.ui.theme.ScreenBackground
 import dk.soerensen.chorechamp.viewmodel.ParentViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -38,101 +40,104 @@ fun ParentScreen(navController: NavController, username: String) {
 
     val today = LocalDate.now().format(DateTimeFormatter.ofPattern("EEEE, MMMM d"))
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("🏠 ChoreChamp - Parent") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary
+    ScreenBackground(backgroundRes = R.drawable.bg_parent) {
+        Scaffold(
+            containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0f),
+            topBar = {
+                TopAppBar(
+                    title = { Text("🏠 ChoreChamp - Parent") },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
+                        titleContentColor = MaterialTheme.colorScheme.onSurface
+                    )
                 )
-            )
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { navController.navigate(NavRoutes.addTask(username)) }
-            ) {
-                Icon(Icons.Default.Add, contentDescription = "Add Task")
+            },
+            floatingActionButton = {
+                FloatingActionButton(
+                    onClick = { navController.navigate(NavRoutes.addTask(username)) }
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = "Add Task")
+                }
             }
-        }
-    ) { paddingValues ->
-        if (uiState.isLoading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        } else {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .padding(horizontal = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                contentPadding = PaddingValues(vertical = 16.dp)
-            ) {
-                item {
-                    Text(
-                        text = today,
-                        style = MaterialTheme.typography.headlineSmall,
-                        color = MaterialTheme.colorScheme.primary,
-                        fontWeight = FontWeight.Bold
-                    )
+        ) { paddingValues ->
+            if (uiState.isLoading) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
                 }
-
-                item {
-                    ApprovalSummaryCard(
-                        pendingCount = uiState.pendingCount,
-                        onOpenApprovals = { navController.navigate(NavRoutes.approvals(username)) }
-                    )
-                }
-
-                item {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        OutlinedButton(
-                            onClick = { navController.navigate(NavRoutes.parentRewards(username)) },
-                            modifier = Modifier.weight(1f)
-                        ) {
-                            Text("🏆 Rewards")
-                        }
-                        OutlinedButton(
-                            onClick = { navController.navigate(NavRoutes.addTask(username)) },
-                            modifier = Modifier.weight(1f)
-                        ) {
-                            Text("➕ Add Chore")
-                        }
-                    }
-                }
-
-                item {
-                    Text(
-                        text = "Today's Chores",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-
-                if (uiState.todayTasks.isEmpty()) {
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .padding(horizontal = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    contentPadding = PaddingValues(vertical = 16.dp)
+                ) {
                     item {
                         Text(
-                            text = "No chores planned for today. Use the + button to add some!",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                            text = today,
+                            style = MaterialTheme.typography.headlineSmall,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.Bold
                         )
                     }
-                }
 
-                items(uiState.todayTasks) { task ->
-                    ParentTaskCard(
-                        task = task,
-                        childName = uiState.childProfiles[task.selectedByChildId]?.username
-                    )
+                    item {
+                        ApprovalSummaryCard(
+                            pendingCount = uiState.pendingCount,
+                            onOpenApprovals = { navController.navigate(NavRoutes.approvals(username)) }
+                        )
+                    }
+
+                    item {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            OutlinedButton(
+                                onClick = { navController.navigate(NavRoutes.parentRewards(username)) },
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Text("🏆 Rewards")
+                            }
+                            OutlinedButton(
+                                onClick = { navController.navigate(NavRoutes.addTask(username)) },
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Text("➕ Add Chore")
+                            }
+                        }
+                    }
+
+                    item {
+                        Text(
+                            text = "Today's Chores",
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+
+                    if (uiState.todayTasks.isEmpty()) {
+                        item {
+                            Text(
+                                text = "No chores planned for today. Use the + button to add some!",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                            )
+                        }
+                    }
+
+                    items(uiState.todayTasks) { task ->
+                        ParentTaskCard(
+                            task = task,
+                            childName = uiState.childProfiles[task.selectedByChildId]?.username
+                        )
+                    }
                 }
             }
         }
@@ -145,9 +150,9 @@ private fun ApprovalSummaryCard(pendingCount: Int, onOpenApprovals: () -> Unit) 
         onClick = onOpenApprovals,
         colors = CardDefaults.cardColors(
             containerColor = if (pendingCount > 0)
-                MaterialTheme.colorScheme.errorContainer
+                MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.9f)
             else
-                MaterialTheme.colorScheme.surfaceVariant
+                MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
         ),
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -196,7 +201,7 @@ private fun ParentTaskCard(task: TaskEntity, childName: String?) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
+            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
         )
     ) {
         Row(

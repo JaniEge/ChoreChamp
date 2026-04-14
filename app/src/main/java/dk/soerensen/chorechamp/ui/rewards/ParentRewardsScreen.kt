@@ -19,9 +19,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import dk.soerensen.chorechamp.R
 import dk.soerensen.chorechamp.data.local.database.ChoreChampDatabase
 import dk.soerensen.chorechamp.data.local.entity.RewardEntity
 import dk.soerensen.chorechamp.data.repository.ChoreRepository
+import dk.soerensen.chorechamp.ui.theme.ScreenBackground
 import dk.soerensen.chorechamp.viewmodel.ParentRewardsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -88,66 +90,72 @@ fun ParentRewardsScreen(navController: NavController) {
         )
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("🏆 Manage Rewards") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+    ScreenBackground(backgroundRes = R.drawable.bg_parentrewards) {
+        Scaffold(
+            containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0f),
+            topBar = {
+                TopAppBar(
+                    title = { Text("🏆 Manage Rewards") },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
+                    ),
+                    navigationIcon = {
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    }
+                )
+            },
+            floatingActionButton = {
+                FloatingActionButton(onClick = { showAddDialog = true }) {
+                    Icon(Icons.Default.Add, contentDescription = "Add Reward")
+                }
+            }
+        ) { paddingValues ->
+            if (uiState.isLoading) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            } else if (uiState.rewards.isEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .padding(24.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            text = "No rewards yet.",
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                        Text(
+                            text = "Tap + to add rewards for children to redeem.",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                        )
                     }
                 }
-            )
-        },
-        floatingActionButton = {
-            FloatingActionButton(onClick = { showAddDialog = true }) {
-                Icon(Icons.Default.Add, contentDescription = "Add Reward")
-            }
-        }
-    ) { paddingValues ->
-        if (uiState.isLoading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        } else if (uiState.rewards.isEmpty()) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .padding(24.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(
-                        text = "No rewards yet.",
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    Text(
-                        text = "Tap + to add rewards for children to redeem.",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
-                    )
-                }
-            }
-        } else {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .padding(horizontal = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                contentPadding = PaddingValues(vertical = 12.dp)
-            ) {
-                items(uiState.rewards, key = { it.id }) { reward ->
-                    ParentRewardCard(
-                        reward = reward,
-                        onDelete = { viewModel.deleteReward(reward) }
-                    )
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .padding(horizontal = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    contentPadding = PaddingValues(vertical = 12.dp)
+                ) {
+                    items(uiState.rewards, key = { it.id }) { reward ->
+                        ParentRewardCard(
+                            reward = reward,
+                            onDelete = { viewModel.deleteReward(reward) }
+                        )
+                    }
                 }
             }
         }
@@ -159,7 +167,7 @@ private fun ParentRewardCard(reward: RewardEntity, onDelete: () -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
+            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
         )
     ) {
         Row(

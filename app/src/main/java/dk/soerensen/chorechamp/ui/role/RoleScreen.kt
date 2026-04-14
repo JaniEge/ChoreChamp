@@ -4,7 +4,9 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -13,9 +15,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import dk.soerensen.chorechamp.R
 import dk.soerensen.chorechamp.data.local.database.ChoreChampDatabase
 import dk.soerensen.chorechamp.data.repository.ChoreRepository
 import dk.soerensen.chorechamp.ui.navigation.NavRoutes
+import dk.soerensen.chorechamp.ui.theme.ScreenBackground
 import dk.soerensen.chorechamp.viewmodel.RoleViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,79 +48,81 @@ fun RoleScreen(navController: NavController) {
         }
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+    ScreenBackground(backgroundRes = R.drawable.bg_role) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp),
+            contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = "🐉 ChoreChamp",
-                style = MaterialTheme.typography.headlineLarge,
-                color = MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.Bold
-            )
-
-            Text(
-                text = "Who are you?",
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-
-            OutlinedTextField(
-                value = uiState.username,
-                onValueChange = viewModel::onUsernameChange,
-                label = { Text("Username") },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth()
-            )
-
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .selectableGroup(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
                 Text(
-                    text = "Choose your role:",
-                    style = MaterialTheme.typography.labelLarge,
+                    text = "🐉 ChoreChamp",
+                    style = MaterialTheme.typography.headlineLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Text(
+                    text = "Who are you?",
+                    style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onBackground
                 )
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+
+                OutlinedTextField(
+                    value = uiState.username,
+                    onValueChange = viewModel::onUsernameChange,
+                    label = { Text("Username") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .selectableGroup(),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = "Choose your role:",
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        RoleCard(
+                            label = "👨‍👩‍👧 Parent",
+                            selected = uiState.selectedRole == "PARENT",
+                            onClick = { viewModel.onRoleSelected("PARENT") },
+                            modifier = Modifier.weight(1f)
+                        )
+                        RoleCard(
+                            label = "🧒 Child",
+                            selected = uiState.selectedRole == "CHILD",
+                            onClick = { viewModel.onRoleSelected("CHILD") },
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                }
+
+                Button(
+                    onClick = viewModel::onContinueClicked,
+                    enabled = uiState.username.isNotBlank() && uiState.selectedRole != null && !uiState.isLoading,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    RoleCard(
-                        label = "👨‍👩‍👧 Parent",
-                        selected = uiState.selectedRole == "PARENT",
-                        onClick = { viewModel.onRoleSelected("PARENT") },
-                        modifier = Modifier.weight(1f)
-                    )
-                    RoleCard(
-                        label = "🧒 Child",
-                        selected = uiState.selectedRole == "CHILD",
-                        onClick = { viewModel.onRoleSelected("CHILD") },
-                        modifier = Modifier.weight(1f)
-                    )
-                }
-            }
-
-            Button(
-                onClick = viewModel::onContinueClicked,
-                enabled = uiState.username.isNotBlank() && uiState.selectedRole != null && !uiState.isLoading,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                if (uiState.isLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(20.dp),
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
-                } else {
-                    Text("Continue")
+                    if (uiState.isLoading) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(20.dp),
+                            color = MaterialTheme.colorScheme.onPrimary
+                        )
+                    } else {
+                        Text("Continue")
+                    }
                 }
             }
         }
@@ -139,9 +145,9 @@ fun RoleCard(
         ),
         colors = CardDefaults.cardColors(
             containerColor = if (selected)
-                MaterialTheme.colorScheme.primaryContainer
+                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.9f)
             else
-                MaterialTheme.colorScheme.surface
+                MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
         )
     ) {
         Box(

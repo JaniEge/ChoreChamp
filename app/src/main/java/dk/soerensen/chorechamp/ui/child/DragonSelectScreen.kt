@@ -2,14 +2,14 @@ package dk.soerensen.chorechamp.ui.child
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -18,13 +18,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import dk.soerensen.chorechamp.R
 import dk.soerensen.chorechamp.data.local.database.ChoreChampDatabase
 import dk.soerensen.chorechamp.data.repository.ChoreRepository
 import dk.soerensen.chorechamp.model.DragonHelper
 import dk.soerensen.chorechamp.ui.navigation.NavRoutes
-import dk.soerensen.chorechamp.ui.theme.BackgroundDark
-import dk.soerensen.chorechamp.ui.theme.BackgroundMedium
-import dk.soerensen.chorechamp.ui.theme.DragonGold
+import dk.soerensen.chorechamp.ui.theme.ScreenBackground
 import dk.soerensen.chorechamp.viewmodel.DragonSelectViewModel
 
 @Composable
@@ -48,15 +47,7 @@ fun DragonSelectScreen(navController: NavController, username: String) {
         }
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                Brush.verticalGradient(
-                    colors = listOf(BackgroundDark, BackgroundMedium)
-                )
-            )
-    ) {
+    ScreenBackground(backgroundRes = R.drawable.bg_dragonselect) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -70,7 +61,7 @@ fun DragonSelectScreen(navController: NavController, username: String) {
                 text = "🐉 Choose Your Dragon!",
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
-                color = DragonGold,
+                color = MaterialTheme.colorScheme.primary,
                 textAlign = TextAlign.Center
             )
 
@@ -149,13 +140,13 @@ private fun DragonOption(
         shape = RoundedCornerShape(16.dp),
         border = BorderStroke(
             width = if (isSelected) 3.dp else 1.dp,
-            color = if (isSelected) DragonGold else MaterialTheme.colorScheme.outline
+            color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline
         ),
         colors = CardDefaults.cardColors(
             containerColor = if (isSelected)
-                MaterialTheme.colorScheme.primaryContainer
+                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.9f)
             else
-                MaterialTheme.colorScheme.surface
+                MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
         )
     ) {
         Column(
@@ -184,7 +175,7 @@ private fun DragonOption(
                 Text(
                     text = "✓",
                     style = MaterialTheme.typography.titleLarge,
-                    color = DragonGold
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
         }
