@@ -83,7 +83,12 @@ class ChoreRepository(
         taskDao.getCompletedChoresCount(childId)
 
     suspend fun selectDragon(childId: Int, dragonType: Int) {
-        childStatsDao.updateDragonType(childId, dragonType)
+        val existing = childStatsDao.getStatsOnce(childId)
+        if (existing == null) {
+            childStatsDao.insert(ChildStatsEntity(childId = childId, dragonType = dragonType))
+        } else {
+            childStatsDao.updateDragonType(childId, dragonType)
+        }
     }
 
     suspend fun getDragonType(childId: Int): Int {
