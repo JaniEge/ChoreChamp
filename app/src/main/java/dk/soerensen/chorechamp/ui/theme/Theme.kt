@@ -12,40 +12,43 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = DragonGold,
-    secondary = DragonGreen,
-    tertiary = ChoreBlue,
-    background = BackgroundDark,
-    surface = BackgroundMedium,
-    onPrimary = BackgroundDark,
-    onSecondary = TextOnDark,
-    onTertiary = TextOnDark,
-    onBackground = TextOnDark,
-    onSurface = TextOnDark,
-    primaryContainer = DragonGoldLight,
-    secondaryContainer = DragonGreenLight,
-    tertiaryContainer = ChoreBlueLight,
-    onPrimaryContainer = BackgroundDark,
-    onSecondaryContainer = BackgroundDark,
-    onTertiaryContainer = BackgroundDark,
+    primary = PurplePrimary,
+    onPrimary = TextLight,
+    primaryContainer = PurplePrimaryDark,
+    onPrimaryContainer = TextLight,
+    secondary = GreenSecondary,
+    onSecondary = TextDark,
+    secondaryContainer = GreenContainer,
+    onSecondaryContainer = TextDark,
+    background = DarkBackground,
+    onBackground = TextLight,
+    surface = DarkSurface,
+    onSurface = TextLight,
+    surfaceVariant = DarkSurface,
+    onSurfaceVariant = TextLight,
+    outline = OutlineLight,
     error = RejectRed,
-    onError = TextOnDark
+    onError = TextLight
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40,
-    background = DragonGoldLight,
-    surface = SurfaceCard,
-    onPrimary = TextOnDark,
-    onSecondary = TextOnDark,
-    onTertiary = TextOnDark,
-    onBackground = BackgroundDark,
-    onSurface = BackgroundDark,
-    primaryContainer = Purple80,
-    secondaryContainer = PurpleGrey80,
-    tertiaryContainer = Pink80
+    primary = PurplePrimary,
+    onPrimary = TextLight,
+    primaryContainer = PurpleContainer,
+    onPrimaryContainer = TextDark,
+    secondary = GreenSecondary,
+    onSecondary = TextLight,
+    secondaryContainer = GreenContainer,
+    onSecondaryContainer = TextDark,
+    background = LightBackground,
+    onBackground = TextDark,
+    surface = LightSurface,
+    onSurface = TextDark,
+    surfaceVariant = LightSurface,
+    onSurfaceVariant = TextDark,
+    outline = OutlineLight,
+    error = RejectRed,
+    onError = TextLight
 )
 
 @Composable

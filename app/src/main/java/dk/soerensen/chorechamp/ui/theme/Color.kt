@@ -2,25 +2,35 @@ package dk.soerensen.chorechamp.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+// Primary Purple
+val PurplePrimary = Color(0xFF7B61FF)
+val PurplePrimaryDark = Color(0xFF5B3FD6)
+val PurpleContainer = Color(0xFFE9DDFF)
 
-val Purple40 = Color(0xFF6650A4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+// Secondary Green
+val GreenSecondary = Color(0xFF7FB77E)
+val GreenContainer = Color(0xFFDDF3DC)
 
-val DragonGreen = Color(0xFF2E7D32)
-val DragonGreenLight = Color(0xFF81C784)
-val DragonGold = Color(0xFFFFC107)
-val DragonGoldLight = Color(0xFFFFECB3)
-val ChoreBlue = Color(0xFF1565C0)
-val ChoreBlueLight = Color(0xFF90CAF9)
-val BackgroundDark = Color(0xFF1A1A2E)
-val BackgroundMedium = Color(0xFF16213E)
-val SurfaceCard = Color(0x99FFFFFF)
+// Light theme
+val LightBackground = Color(0xFFFFFBFE)
+val LightSurface = Color(0xFFF7F2FA)
+
+// Dark theme
+val DarkBackground = Color(0xFF1C1B1F)
+val DarkSurface = Color(0xFF2B2930)
+
+// Text
+val TextDark = Color(0xFF1C1B1F)
+val TextLight = Color(0xFFF4EFF4)
+
+// Outline
+val OutlineLight = Color(0xFF7A757F)
+
+// Functional colors (keep these for approve/reject)
 val ApproveGreen = Color(0xFF388E3C)
 val RejectRed = Color(0xFFD32F2F)
-val TextOnDark = Color(0xFFE8EAF6)
-val TextSecondary = Color(0xFFB0BEC5)
 val PointsGold = Color(0xFFFFD700)
+
+// Card surface (semi-transparent for overlays on background images)
+val SurfaceCardTransparent = Color(0xDDF7F2FA)
+val SurfaceCardTransparentDark = Color(0xDD2B2930)

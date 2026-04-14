@@ -16,8 +16,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import dk.soerensen.chorechamp.R
 import dk.soerensen.chorechamp.data.local.database.ChoreChampDatabase
 import dk.soerensen.chorechamp.data.repository.ChoreRepository
+import dk.soerensen.chorechamp.ui.theme.ScreenBackground
 import dk.soerensen.chorechamp.viewmodel.AddTaskViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -42,33 +44,38 @@ fun AddTaskScreen(navController: NavController, username: String) {
         }
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Add New Chore") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+    ScreenBackground(backgroundRes = R.drawable.bg_addtask) {
+        Scaffold(
+            containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0f),
+            topBar = {
+                TopAppBar(
+                    title = { Text("Add New Chore") },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
+                    ),
+                    navigationIcon = {
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
                     }
-                }
-            )
-        }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(16.dp)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            OutlinedTextField(
-                value = uiState.title,
-                onValueChange = viewModel::onTitleChange,
-                label = { Text("Chore title") },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth()
-            )
+                )
+            }
+        ) { paddingValues ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(16.dp)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                OutlinedTextField(
+                    value = uiState.title,
+                    onValueChange = viewModel::onTitleChange,
+                    label = { Text("Chore title") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
 
             OutlinedTextField(
                 value = uiState.points,
@@ -174,12 +181,13 @@ fun AddTaskScreen(navController: NavController, username: String) {
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Button(
-                onClick = viewModel::saveTask,
-                enabled = uiState.title.isNotBlank() && uiState.points.isNotBlank(),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Save Chore")
+                Button(
+                    onClick = viewModel::saveTask,
+                    enabled = uiState.title.isNotBlank() && uiState.points.isNotBlank(),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Save Chore")
+                }
             }
         }
     }
