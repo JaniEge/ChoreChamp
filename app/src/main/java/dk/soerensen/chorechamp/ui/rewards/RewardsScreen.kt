@@ -3,7 +3,6 @@ package dk.soerensen.chorechamp.ui.rewards
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
@@ -12,15 +11,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import dk.soerensen.chorechamp.data.local.database.ChoreChampDatabase
 import dk.soerensen.chorechamp.data.local.entity.RewardEntity
+import dk.soerensen.chorechamp.data.local.entity.TaskEntity
 import dk.soerensen.chorechamp.data.repository.ChoreRepository
-import dk.soerensen.chorechamp.viewmodel.RewardsViewModel
+import dk.soerensen.chorechamp.viewmodel.ChildRewardsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,67 +29,26 @@ fun RewardsScreen(navController: NavController, username: String) {
     val repository = ChoreRepository(
         db.userProfileDao(), db.taskDao(), db.rewardDao(), db.childStatsDao()
     )
-    val viewModel: RewardsViewModel = viewModel(
-        factory = RewardsViewModel.Factory(repository, username, false)
+    val viewModel: ChildRewardsViewModel = viewModel(
+        factory = ChildRewardsViewModel.Factory(repository, username)
     )
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val snackbarHostState = remember { SnackbarHostState() }
 
-    var showAddDialog by remember { mutableStateOf(false) }
-    var newRewardTitle by remember { mutableStateOf("") }
-    var newRewardCost by remember { mutableStateOf("") }
-
-    if (showAddDialog) {
-        AlertDialog(
-            onDismissRequest = { showAddDialog = false },
-            title = { Text("Add Reward") },
-            text = {
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(
-                        value = newRewardTitle,
-                        onValueChange = { newRewardTitle = it },
-                        label = { Text("Reward name") },
-                        singleLine = true
-                    )
-                    OutlinedTextField(
-                        value = newRewardCost,
-                        onValueChange = { newRewardCost = it },
-                        label = { Text("Point cost") },
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                    )
-                }
-            },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        val cost = newRewardCost.toIntOrNull() ?: 0
-                        if (newRewardTitle.isNotBlank() && cost > 0) {
-                            viewModel.addReward(newRewardTitle, cost)
-                            showAddDialog = false
-                            newRewardTitle = ""
-                            newRewardCost = ""
-                        }
-                    }
-                ) { Text("Add") }
-            },
-            dismissButton = {
-                OutlinedButton(onClick = { showAddDialog = false }) { Text("Cancel") }
-            }
-        )
+    LaunchedEffect(uiState.redeemMessage) {
+        val message = uiState.redeemMessage ?: return@LaunchedEffect
+        snackbarHostState.showSnackbar(message)
+        viewModel.clearRedeemMessage()
     }
 
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = { Text("🏆 Rewards") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                    }
-                },
-                actions = {
-                    TextButton(onClick = { showAddDialog = true }) {
-                        Text("+ Add")
                     }
                 }
             )
@@ -106,19 +64,24 @@ fun RewardsScreen(navController: NavController, username: String) {
                 CircularProgressIndicator()
             }
         } else {
-            Column(
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = PaddingValues(vertical = 12.dp)
             ) {
-                if (uiState.childPoints > 0) {
+                // Total points summary
+                item {
                     Surface(
                         color = MaterialTheme.colorScheme.primaryContainer,
+                        shape = MaterialTheme.shapes.medium,
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(
-                            text = "Your points: ${uiState.childPoints} ⭐",
-                            style = MaterialTheme.typography.titleMedium,
+                            text = "⭐ Your total points: ${uiState.totalPoints}",
+                            style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(16.dp),
                             color = MaterialTheme.colorScheme.onPrimaryContainer
@@ -126,32 +89,57 @@ fun RewardsScreen(navController: NavController, username: String) {
                     }
                 }
 
-                if (uiState.rewards.isEmpty()) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(24.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
+                // Completed tasks section
+                item {
+                    Text(
+                        text = "✅ Completed Tasks",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+
+                if (uiState.approvedTasks.isEmpty()) {
+                    item {
                         Text(
-                            text = "No rewards yet. Parents can add some!",
-                            style = MaterialTheme.typography.bodyLarge
+                            text = "No completed tasks yet. Complete some chores to earn points!",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
+                            modifier = Modifier.padding(vertical = 4.dp)
                         )
                     }
                 } else {
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = 16.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                        contentPadding = PaddingValues(vertical = 12.dp)
-                    ) {
-                        items(uiState.rewards) { reward ->
-                            RewardCard(
-                                reward = reward,
-                                childPoints = uiState.childPoints
-                            )
-                        }
+                    items(uiState.approvedTasks) { task ->
+                        CompletedTaskItem(task = task)
+                    }
+                }
+
+                // Available rewards section
+                item {
+                    Text(
+                        text = "🎁 Available Rewards",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+
+                if (uiState.rewards.isEmpty()) {
+                    item {
+                        Text(
+                            text = "No rewards available yet. Ask a parent to add some!",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
+                            modifier = Modifier.padding(vertical = 4.dp)
+                        )
+                    }
+                } else {
+                    items(uiState.rewards) { reward ->
+                        RewardCard(
+                            reward = reward,
+                            totalPoints = uiState.totalPoints,
+                            onRedeem = { viewModel.redeemReward(reward) }
+                        )
                     }
                 }
             }
@@ -160,8 +148,39 @@ fun RewardsScreen(navController: NavController, username: String) {
 }
 
 @Composable
-private fun RewardCard(reward: RewardEntity, childPoints: Int) {
-    val canAfford = childPoints >= reward.cost
+private fun CompletedTaskItem(task: TaskEntity) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = task.title,
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.weight(1f)
+            )
+            Text(
+                text = "+${task.points} pts",
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.secondary
+            )
+        }
+    }
+}
+
+@Composable
+private fun RewardCard(reward: RewardEntity, totalPoints: Int, onRedeem: () -> Unit) {
+    val canAfford = totalPoints >= reward.cost
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -179,7 +198,7 @@ private fun RewardCard(reward: RewardEntity, childPoints: Int) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column {
+            Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = reward.title,
                     style = MaterialTheme.typography.titleMedium,
@@ -191,11 +210,13 @@ private fun RewardCard(reward: RewardEntity, childPoints: Int) {
                     color = MaterialTheme.colorScheme.primary
                 )
             }
-            if (canAfford && childPoints > 0) {
-                OutlinedButton(onClick = { }) {
-                    Text("Redeem")
-                }
+            Button(
+                onClick = onRedeem,
+                enabled = canAfford
+            ) {
+                Text("Redeem")
             }
         }
     }
 }
+

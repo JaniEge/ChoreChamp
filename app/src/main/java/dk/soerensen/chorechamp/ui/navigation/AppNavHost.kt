@@ -13,6 +13,7 @@ import dk.soerensen.chorechamp.ui.child.ChooseTasksScreen
 import dk.soerensen.chorechamp.ui.parent.AddTaskScreen
 import dk.soerensen.chorechamp.ui.parent.ParentScreen
 import dk.soerensen.chorechamp.ui.profile.ProfileScreen
+import dk.soerensen.chorechamp.ui.rewards.ParentRewardsScreen
 import dk.soerensen.chorechamp.ui.rewards.RewardsScreen
 import dk.soerensen.chorechamp.ui.role.RoleScreen
 
@@ -76,6 +77,13 @@ fun AppNavHost(
         ) { backStackEntry ->
             val username = backStackEntry.arguments?.getString("username") ?: ""
             RewardsScreen(navController = navController, username = username)
+        }
+
+        composable(
+            route = NavRoutes.PARENT_REWARDS,
+            arguments = listOf(navArgument("username") { type = NavType.StringType })
+        ) {
+            ParentRewardsScreen(navController = navController)
         }
 
         composable(

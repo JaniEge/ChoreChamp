@@ -66,12 +66,7 @@ class ChoreRepository(
         val stats = childStatsDao.getStatsOnce(childId)
             ?: ChildStatsEntity(childId = childId)
         val newPoints = stats.totalPoints + task.points
-        val newLevel = when {
-            newPoints >= 100 -> 3
-            newPoints >= 50 -> 2
-            else -> 1
-        }
-        childStatsDao.update(stats.copy(totalPoints = newPoints, dragonLevel = newLevel))
+        childStatsDao.update(stats.copy(totalPoints = newPoints, dragonLevel = calculateDragonLevel(newPoints)))
     }
 
     suspend fun rejectTask(taskId: Int) {
@@ -88,5 +83,22 @@ class ChoreRepository(
 
     suspend fun addReward(reward: RewardEntity) = rewardDao.insert(reward)
 
+    suspend fun deleteReward(reward: RewardEntity) = rewardDao.delete(reward)
+
     fun getChildStats(childId: Int): Flow<ChildStatsEntity?> = childStatsDao.getStats(childId)
+
+    fun getApprovedTasksForChild(childId: Int): Flow<List<TaskEntity>> =
+        taskDao.getApprovedTasksForChild(childId)
+
+    suspend fun redeemReward(childId: Int, rewardCost: Int) {
+        val stats = childStatsDao.getStatsOnce(childId) ?: return
+        val newPoints = (stats.totalPoints - rewardCost).coerceAtLeast(0)
+        childStatsDao.update(stats.copy(totalPoints = newPoints, dragonLevel = calculateDragonLevel(newPoints)))
+    }
+
+    private fun calculateDragonLevel(points: Int): Int = when {
+        points >= 100 -> 3
+        points >= 50 -> 2
+        else -> 1
+    }
 }
