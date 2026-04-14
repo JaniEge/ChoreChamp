@@ -11,6 +11,8 @@ object NavRoutes {
     const val PARENT_REWARDS = "parent_rewards/{username}"
     const val PROFILE = "profile/{username}"
 
+    const val DRAGON_SELECT = "dragon_select/{username}"
+
     fun child(username: String) = "child/$username"
     fun childChooseTasks(username: String) = "child_choose_tasks/$username"
     fun parent(username: String) = "parent/$username"
@@ -19,4 +21,5 @@ object NavRoutes {
     fun rewards(username: String) = "rewards/$username"
     fun parentRewards(username: String) = "parent_rewards/$username"
     fun profile(username: String) = "profile/$username"
+    fun dragonSelect(username: String) = "dragon_select/$username"
 }

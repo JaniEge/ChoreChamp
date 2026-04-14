@@ -1,0 +1,17 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    <!-- Teenage Dragon - Dragon 3 (Purple) -->
+    <path android:fillColor="#5E35B1" android:pathData="M60,40 C78,40 95,55 95,75 C95,95 78,110 60,110 C42,110 25,95 25,75 C25,55 42,40 60,40 Z" />
+    <path android:fillColor="#CE93D8" android:pathData="M25,65 C10,50 5,30 12,20 C18,35 22,50 25,65 Z" />
+    <path android:fillColor="#CE93D8" android:pathData="M95,65 C110,50 115,30 108,20 C102,35 98,50 95,65 Z" />
+    <path android:fillColor="#7B1FA2" android:pathData="M52,30 L68,30 L65,45 L55,45 Z" />
+    <path android:fillColor="#7B1FA2" android:pathData="M60,8 C73,8 82,18 82,30 C82,42 73,48 60,48 C47,48 38,42 38,30 C38,18 47,8 60,8 Z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M50,24 C50,20 54,18 57,21 C57,25 53,27 50,24 Z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M70,24 C70,20 66,18 63,21 C63,25 67,27 70,24 Z" />
+    <path android:fillColor="#311B92" android:pathData="M51,8 L47,0 L55,6 Z" />
+    <path android:fillColor="#311B92" android:pathData="M69,8 L73,0 L65,6 Z" />
+    <path android:fillColor="#5E35B1" android:pathData="M60,110 L50,120 L65,115 L75,120 Z" />
+</vector>

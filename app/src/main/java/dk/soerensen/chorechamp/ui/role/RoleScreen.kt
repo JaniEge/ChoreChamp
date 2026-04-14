@@ -34,7 +34,13 @@ fun RoleScreen(navController: NavController) {
         viewModel.onNavigated()
         when (user.role) {
             "PARENT" -> navController.navigate(NavRoutes.parent(user.username))
-            "CHILD" -> navController.navigate(NavRoutes.child(user.username))
+            "CHILD" -> {
+                if (uiState.needsDragonSelect) {
+                    navController.navigate(NavRoutes.dragonSelect(user.username))
+                } else {
+                    navController.navigate(NavRoutes.child(user.username))
+                }
+            }
         }
     }
 

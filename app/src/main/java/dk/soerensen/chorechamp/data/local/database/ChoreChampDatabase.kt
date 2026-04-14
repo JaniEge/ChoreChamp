@@ -14,7 +14,7 @@ import dk.soerensen.chorechamp.data.local.entity.*
         RewardEntity::class,
         ChildStatsEntity::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class ChoreChampDatabase : RoomDatabase() {

@@ -14,7 +14,8 @@ data class RoleUiState(
     val username: String = "",
     val selectedRole: String? = null,
     val isLoading: Boolean = false,
-    val navigateTo: UserProfileEntity? = null
+    val navigateTo: UserProfileEntity? = null,
+    val needsDragonSelect: Boolean = false
 )
 
 class RoleViewModel(private val repository: ChoreRepository) : ViewModel() {
@@ -38,7 +39,8 @@ class RoleViewModel(private val repository: ChoreRepository) : ViewModel() {
         viewModelScope.launch {
             _uiState.value = state.copy(isLoading = true)
             val user = repository.findOrCreateUser(username, role)
-            _uiState.value = _uiState.value.copy(isLoading = false, navigateTo = user)
+            val needsDragonSelect = role == "CHILD" && repository.getDragonType(user.id) == 0
+            _uiState.value = _uiState.value.copy(isLoading = false, navigateTo = user, needsDragonSelect = needsDragonSelect)
         }
     }
 

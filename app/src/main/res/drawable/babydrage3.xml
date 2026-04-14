@@ -1,0 +1,31 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    <!-- Baby Dragon - Dragon 3 (Purple) -->
+    <path
+        android:fillColor="#5E35B1"
+        android:pathData="M60,30 C75,30 90,45 90,65 C90,85 75,95 60,95 C45,95 30,85 30,65 C30,45 45,30 60,30 Z" />
+    <path
+        android:fillColor="#CE93D8"
+        android:pathData="M30,55 C20,45 15,35 20,30 C25,40 28,48 30,55 Z" />
+    <path
+        android:fillColor="#CE93D8"
+        android:pathData="M90,55 C100,45 105,35 100,30 C95,40 92,48 90,55 Z" />
+    <path
+        android:fillColor="#7B1FA2"
+        android:pathData="M60,15 C70,15 78,22 78,32 C78,42 70,48 60,48 C50,48 42,42 42,32 C42,22 50,15 60,15 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M52,27 C52,23 56,21 58,24 C58,28 54,30 52,27 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M68,27 C68,23 64,21 62,24 C62,28 66,30 68,27 Z" />
+    <path
+        android:fillColor="#311B92"
+        android:pathData="M53,15 L50,8 L56,13 Z" />
+    <path
+        android:fillColor="#311B92"
+        android:pathData="M67,15 L70,8 L64,13 Z" />
+</vector>

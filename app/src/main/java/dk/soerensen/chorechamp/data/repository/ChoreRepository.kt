@@ -79,6 +79,17 @@ class ChoreRepository(
         taskDao.update(task.copy(selectedByChildId = null, status = "AVAILABLE"))
     }
 
+    fun getCompletedChoresCount(childId: Int): Flow<Int> =
+        taskDao.getCompletedChoresCount(childId)
+
+    suspend fun selectDragon(childId: Int, dragonType: Int) {
+        childStatsDao.updateDragonType(childId, dragonType)
+    }
+
+    suspend fun getDragonType(childId: Int): Int {
+        return childStatsDao.getStatsOnce(childId)?.dragonType ?: 0
+    }
+
     fun getAllRewards(): Flow<List<RewardEntity>> = rewardDao.getAllRewards()
 
     suspend fun addReward(reward: RewardEntity) = rewardDao.insert(reward)

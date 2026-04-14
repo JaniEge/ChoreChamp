@@ -1,0 +1,22 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    <!-- Dragon 2 preview: Green dragon silhouette -->
+    <path
+        android:fillColor="#43A047"
+        android:pathData="M60,10 C80,10 100,30 100,60 C100,90 80,110 60,110 C40,110 20,90 20,60 C20,30 40,10 60,10 Z" />
+    <path
+        android:fillColor="#1B5E20"
+        android:pathData="M60,25 L78,42 L60,38 L42,42 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M45,55 C45,50 50,47 55,50 C55,55 50,58 45,55 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M75,55 C75,50 70,47 65,50 C65,55 70,58 75,55 Z" />
+    <path
+        android:fillColor="#1B5E20"
+        android:pathData="M50,70 L60,75 L70,70 L65,80 L55,80 Z" />
+</vector>
