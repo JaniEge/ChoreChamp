@@ -68,12 +68,18 @@ fun ChildScreen(navController: NavController, username: String) {
                     onProfileClick = { navController.navigate(NavRoutes.profile(username)) }
                 )
 
-                Text(
-                    text = today,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary,
+                Surface(
+                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f),
+                    shape = MaterialTheme.shapes.medium,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                )
+                ) {
+                    Text(
+                        text = today,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                    )
+                }
 
                 LazyColumn(
                     modifier = Modifier
@@ -84,12 +90,17 @@ fun ChildScreen(navController: NavController, username: String) {
                 ) {
                     if (uiState.todayTasks.isEmpty()) {
                         item {
-                            Text(
-                                text = "No tasks for today. Tap 'Choose Tasks' to add some!",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
-                                modifier = Modifier.padding(16.dp)
-                            )
+                            Surface(
+                                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f),
+                                shape = MaterialTheme.shapes.medium
+                            ) {
+                                Text(
+                                    text = "No tasks for today. Tap 'Choose Tasks' to add some!",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
+                                    modifier = Modifier.padding(16.dp)
+                                )
+                            }
                         }
                     }
                     items(uiState.todayTasks) { task ->
@@ -128,7 +139,7 @@ private fun TopSection(
     val dragonImageRes = DragonHelper.getDragonImage(completedChoresCount, dragonType)
 
     Surface(
-        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
+        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f),
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -231,7 +242,7 @@ private fun TaskCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
+            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f)
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
@@ -297,7 +308,7 @@ private fun BottomActions(
     onRewardsClick: () -> Unit
 ) {
     Surface(
-        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
+        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f),
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(

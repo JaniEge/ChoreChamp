@@ -47,7 +47,7 @@ fun ParentScreen(navController: NavController, username: String) {
                 TopAppBar(
                     title = { Text("🏠 ChoreChamp - Parent") },
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
+                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f),
                         titleContentColor = MaterialTheme.colorScheme.onSurface
                     )
                 )
@@ -150,9 +150,9 @@ private fun ApprovalSummaryCard(pendingCount: Int, onOpenApprovals: () -> Unit) 
         onClick = onOpenApprovals,
         colors = CardDefaults.cardColors(
             containerColor = if (pendingCount > 0)
-                MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.9f)
+                MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.6f)
             else
-                MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
+                MaterialTheme.colorScheme.surface.copy(alpha = 0.6f)
         ),
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -201,7 +201,7 @@ private fun ParentTaskCard(task: TaskEntity, childName: String?) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
+            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f)
         )
     ) {
         Row(
