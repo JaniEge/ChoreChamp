@@ -97,7 +97,7 @@ fun ChildScreen(navController: NavController, username: String) {
                                 Text(
                                     text = "No tasks for today. Tap 'Choose Tasks' to add some!",
                                     style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
+                                    color = MaterialTheme.colorScheme.onSurface,
                                     modifier = Modifier.padding(16.dp)
                                 )
                             }
@@ -204,7 +204,7 @@ private fun TopSection(
                     Text(
                         text = dragonLabel,
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.secondary,
+                        color = MaterialTheme.colorScheme.onSurface,
                         textAlign = TextAlign.Center
                     )
                 }

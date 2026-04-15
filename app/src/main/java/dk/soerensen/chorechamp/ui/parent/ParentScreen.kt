@@ -127,7 +127,7 @@ fun ParentScreen(navController: NavController, username: String) {
                             Text(
                                 text = "No chores planned for today. Use the + button to add some!",
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                                color = MaterialTheme.colorScheme.onBackground
                             )
                         }
                     }

@@ -78,7 +78,7 @@ fun DragonSelectScreen(navController: NavController, username: String) {
                 Text(
                     text = "Pick the dragon you want to raise. Your dragon will grow as you complete chores!",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f),
+                    color = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                 )
