@@ -51,7 +51,7 @@ fun AddTaskScreen(navController: NavController, username: String) {
                 TopAppBar(
                     title = { Text("Add New Chore") },
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
+                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f)
                     ),
                     navigationIcon = {
                         IconButton(onClick = { navController.popBackStack() }) {

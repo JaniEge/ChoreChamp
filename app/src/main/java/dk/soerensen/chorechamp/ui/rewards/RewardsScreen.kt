@@ -51,7 +51,7 @@ fun RewardsScreen(navController: NavController, username: String) {
                 TopAppBar(
                     title = { Text("🏆 Rewards") },
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
+                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f)
                     ),
                     navigationIcon = {
                         IconButton(onClick = { navController.popBackStack() }) {
@@ -82,7 +82,7 @@ fun RewardsScreen(navController: NavController, username: String) {
                     // Total points summary
                     item {
                         Surface(
-                            color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.9f),
+                            color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f),
                             shape = MaterialTheme.shapes.medium,
                             modifier = Modifier.fillMaxWidth()
                         ) {
@@ -160,7 +160,7 @@ private fun CompletedTaskItem(task: TaskEntity) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
+            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f)
         )
     ) {
         Row(
@@ -194,9 +194,9 @@ private fun RewardCard(reward: RewardEntity, totalPoints: Int, onRedeem: () -> U
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = if (canAfford)
-                MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.9f)
+                MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.6f)
             else
-                MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
+                MaterialTheme.colorScheme.surface.copy(alpha = 0.6f)
         )
     ) {
         Row(

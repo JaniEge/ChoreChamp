@@ -57,20 +57,32 @@ fun DragonSelectScreen(navController: NavController, username: String) {
         ) {
             Spacer(modifier = Modifier.height(16.dp))
 
-            Text(
-                text = "🐉 Choose Your Dragon!",
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary,
-                textAlign = TextAlign.Center
-            )
+            Surface(
+                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f),
+                shape = MaterialTheme.shapes.medium
+            ) {
+                Text(
+                    text = "🐉 Choose Your Dragon!",
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                )
+            }
 
-            Text(
-                text = "Pick the dragon you want to raise. Your dragon will grow as you complete chores!",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f),
-                textAlign = TextAlign.Center
-            )
+            Surface(
+                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f),
+                shape = MaterialTheme.shapes.medium
+            ) {
+                Text(
+                    text = "Pick the dragon you want to raise. Your dragon will grow as you complete chores!",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                )
+            }
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -144,9 +156,9 @@ private fun DragonOption(
         ),
         colors = CardDefaults.cardColors(
             containerColor = if (isSelected)
-                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.9f)
+                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
             else
-                MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
+                MaterialTheme.colorScheme.surface.copy(alpha = 0.6f)
         )
     ) {
         Column(

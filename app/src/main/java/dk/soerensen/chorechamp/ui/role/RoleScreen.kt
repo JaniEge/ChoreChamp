@@ -55,10 +55,16 @@ fun RoleScreen(navController: NavController) {
                 .padding(24.dp),
             contentAlignment = Alignment.Center
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(20.dp)
+            Surface(
+                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f),
+                shape = MaterialTheme.shapes.large,
+                modifier = Modifier.fillMaxWidth()
             ) {
+                Column(
+                    modifier = Modifier.padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(20.dp)
+                ) {
                 Text(
                     text = "🐉 ChoreChamp",
                     style = MaterialTheme.typography.headlineLarge,
@@ -124,6 +130,7 @@ fun RoleScreen(navController: NavController) {
                         Text("Continue")
                     }
                 }
+                }
             }
         }
     }
@@ -145,9 +152,9 @@ fun RoleCard(
         ),
         colors = CardDefaults.cardColors(
             containerColor = if (selected)
-                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.9f)
+                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
             else
-                MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
+                MaterialTheme.colorScheme.surface.copy(alpha = 0.6f)
         )
     ) {
         Box(
