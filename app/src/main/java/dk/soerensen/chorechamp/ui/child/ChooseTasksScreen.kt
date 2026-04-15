@@ -42,7 +42,7 @@ fun ChooseTasksScreen(navController: NavController, username: String) {
                 TopAppBar(
                     title = { Text("Choose Tasks") },
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
+                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f)
                     ),
                     navigationIcon = {
                         IconButton(onClick = { navController.popBackStack() }) {
@@ -104,7 +104,7 @@ private fun AvailableTaskItem(task: TaskEntity, onSelect: () -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
+            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f)
         )
     ) {
         Row(
