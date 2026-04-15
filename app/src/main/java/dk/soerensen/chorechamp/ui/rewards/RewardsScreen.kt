@@ -111,7 +111,7 @@ fun RewardsScreen(navController: NavController, username: String) {
                         Text(
                             text = "No completed tasks yet. Complete some chores to earn points!",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
+                            color = MaterialTheme.colorScheme.onBackground,
                             modifier = Modifier.padding(vertical = 4.dp)
                         )
                     }
@@ -136,7 +136,7 @@ fun RewardsScreen(navController: NavController, username: String) {
                         Text(
                             text = "No rewards available yet. Ask a parent to add some!",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
+                            color = MaterialTheme.colorScheme.onBackground,
                             modifier = Modifier.padding(vertical = 4.dp)
                         )
                     }

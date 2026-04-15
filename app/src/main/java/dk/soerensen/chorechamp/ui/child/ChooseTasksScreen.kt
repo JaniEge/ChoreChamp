@@ -69,11 +69,17 @@ fun ChooseTasksScreen(navController: NavController, username: String) {
                         .padding(16.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = "No tasks available for today.\nAsk a parent to add some chores!",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
+                    Surface(
+                        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f),
+                        shape = MaterialTheme.shapes.medium
+                    ) {
+                        Text(
+                            text = "No tasks available for today.\nAsk a parent to add some chores!",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.padding(16.dp)
+                        )
+                    }
                 }
             } else {
                 LazyColumn(

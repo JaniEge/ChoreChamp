@@ -137,7 +137,7 @@ fun ParentRewardsScreen(navController: NavController) {
                         Text(
                             text = "Tap + to add rewards for children to redeem.",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                            color = MaterialTheme.colorScheme.onBackground
                         )
                     }
                 }
